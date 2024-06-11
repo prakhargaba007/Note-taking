@@ -58,8 +58,8 @@ exports.login = async (req, res, next) => {
         email: user.email,
         userId: user._id.toString(),
       },
-      "somesupersecretkey",
-      { expiresIn: "1h" }
+      "somesupersecretkey"
+      // { expiresIn: "1h" }
     );
     res.status(200).json({
       token: token,

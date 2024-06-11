@@ -3,6 +3,7 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const http = require("http");
 require("dotenv").config();
 
 app = express();
@@ -44,3 +45,18 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+// const server = http.createServer((req, res) => {
+//   // Set the response header
+//   res.writeHead(200, { "Content-Type": "text/plain" });
+//   // Write some text to the response
+//   res.end("Welcome to my simple Node.js app!");
+// });
+
+// // Define the port to listen on
+// const port = 3000;
+
+// // Start the server
+// server.listen(port, () => {
+//   console.log(`Server is running on http://localhost:${port}`);
+// });
