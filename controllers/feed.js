@@ -2,18 +2,25 @@ const mongoose = require("mongoose");
 const Post = require("../models/post");
 const User = require("../models/user");
 
+exports.note = async (req, res, next) => {
+  await Post.find();
+  res.status(200).json({
+    message: "Notes retrieved",
+  });
+};
+
 exports.postNote = async (req, res, next) => {
   try {
     // const userId = "6666e8d001974bdb3ee61343";
-    const userId = req.body.userId;
+    const userId = req.userId;
     const title = req.body.title;
     const description = req.body.description;
     const date = req.body.date;
-    console.log({
-      title,
-      description,
-      date,
-    });
+    // console.log({
+    //   title,
+    //   description,
+    //   date,
+    // });
 
     const post = new Post({
       title,
@@ -51,8 +58,9 @@ exports.postNote = async (req, res, next) => {
 
 exports.getNotes = async (req, res, next) => {
   try {
-    // const userId = req.body.userId;
-    let userId = "6666e8d001974bdb3ee61343";
+    const userId = req.userId;
+    // console.log(userId);
+    // let userId = "6666e8d001974bdb3ee61343";
 
     const notes = await Post.find({ author: userId });
     // console.log(notes);
@@ -115,8 +123,8 @@ exports.editNote = async (req, res, next) => {
 exports.deleteNote = async (req, res, next) => {
   try {
     const noteId = req.params.noteId;
-    // const userId = req.body.userId;
-    const userId = "6666e8d001974bdb3ee61343";
+    const userId = req.userId;
+    // const userId = "6666e8d001974bdb3ee61343";
 
     const note = await Post.findById(noteId);
 
@@ -124,8 +132,8 @@ exports.deleteNote = async (req, res, next) => {
       return res.status(404).json({ message: "Note not found" });
     }
 
-    console.log(note.author.toString());
-    console.log(userId);
+    // console.log("1 ", note.author.toString());
+    // console.log("2 ", userId);
 
     if (note.author.toString() !== userId) {
       return res

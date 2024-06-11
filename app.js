@@ -34,7 +34,10 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(env.process.MONGO_ID)
+  // .connect(env.process.MONGO_ID)
+  .connect(
+    "mongodb+srv://prakhargaba:Prakhar1@cluster0.oiz6t6r.mongodb.net/note?retryWrites=true&w=majority&appName=Cluster0"
+  )
   .then((res) => {
     app.listen(port);
     console.log(`App listening on port ${port}!`);

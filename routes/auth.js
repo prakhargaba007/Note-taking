@@ -32,7 +32,6 @@ router.post(
       .notEmpty()
       .withMessage("Name cannot be empty")
       .isLength({ min: 3 }),
-    body("gender").notEmpty(),
   ],
   authCntroller.signup
 );
