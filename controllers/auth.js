@@ -43,7 +43,7 @@ exports.login = async (req, res, next) => {
     const password = req.body.password;
     const user = await User.findOne({ email: email });
     if (!user) {
-      const error = new Error("Email or Password is incorrect");
+      const error = new Error("Email and password is incorrect");
       error.statusCode = 403;
       throw error;
     }
@@ -68,9 +68,10 @@ exports.login = async (req, res, next) => {
   } catch (error) {
     // next(error);
     console.log(error);
-    res.status(200).json({
-      error: error,
-    });
+    // res.status(403).json({
+    //   error: error,
+    // });
+    next(error);
   }
 };
 
