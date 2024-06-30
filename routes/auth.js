@@ -38,7 +38,7 @@ router.post(
 
 router.post("/login", authCntroller.login);
 
-router.post("/profile", authCntroller.getUser);
+router.post("/profile", isAuth, authCntroller.getUser);
 
 router.put(
   "/updateUser",

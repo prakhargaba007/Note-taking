@@ -7,8 +7,6 @@ const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcryptjs");
 
-// const userId = "663b3b4a69d8f63bc3c01a52";
-
 exports.signup = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -18,14 +16,16 @@ exports.signup = async (req, res, next) => {
       error.data = errors.array();
       throw error;
     }
-    const email = req.body.email;
+    const email = req.body.email.toLowerCase();
     const name = req.body.name;
     const password = req.body.password;
+    const role = req.body.role;
     const hashedPw = await bcrypt.hash(password, 12);
     const user = new User({
       email,
       name,
       password: hashedPw,
+      role,
     });
     const result = await user.save();
     res.status(201).json({
@@ -34,12 +34,13 @@ exports.signup = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
+    next(err);
   }
 };
 
 exports.login = async (req, res, next) => {
   try {
-    const email = req.body.email;
+    const email = req.body.email.toLowerCase();
     const password = req.body.password;
     const user = await User.findOne({ email: email });
     if (!user) {
@@ -66,11 +67,7 @@ exports.login = async (req, res, next) => {
       userId: user._id.toString(),
     });
   } catch (error) {
-    // next(error);
     console.log(error);
-    // res.status(403).json({
-    //   error: error,
-    // });
     next(error);
   }
 };
@@ -145,7 +142,8 @@ exports.getUser = async (req, res, next) => {
   const userId = req.userId;
 
   try {
-    const user = await User.findById(userId).populate("posts", "title");
+    const user = await User.findById(userId);
+    console.log(userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
